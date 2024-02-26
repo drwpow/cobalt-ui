@@ -245,6 +245,9 @@ importers:
       '@cobalt-ui/utils':
         specifier: ^1.2.4
         version: link:../utils
+      '@humanwhocodes/momoa':
+        specifier: ^3.0.1
+        version: 3.0.1
       '@types/culori':
         specifier: ^2.1.0
         version: 2.1.0
@@ -1163,6 +1166,11 @@ packages:
     resolution: {integrity: sha512-bxveV4V8v5Yb4ncFTT3rPSgZBOpCkjfK0y4oVVVJwIuDVBRMDXrPyXRL988i5ap9m9bnyEEjWfm5WkBmtffLfA==}
     engines: {node: '>=12.22'}
     dev: true
+
+  /@humanwhocodes/momoa@3.0.1:
+    resolution: {integrity: sha512-Yj2GOwIDb77+A5p4oV2x27edQ7NX86+vKBGWySnfwjKesxn8JCa90Q0Z0eyBBy2G1FulTDrRtfIdmPpIOGhCmQ==}
+    engines: {node: '>=18'}
+    dev: false
 
   /@humanwhocodes/object-schema@2.0.2:
     resolution: {integrity: sha512-6EwiSjwWYP7pTckG6I5eyFANjPhmPjUX9JRLUSfNPC7FX7zK9gyZAfUEaECL6ALTpGX5AjnBq3C9XmVWPitNpw==}

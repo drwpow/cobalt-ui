@@ -43,6 +43,11 @@ export type TokenType = Token['$type'];
 export interface ParsedTokenBase<T = string> extends TokenBase<T> {
   /** unique identifier for this token */
   id: string;
+  /** extensions */
+  $extensions: {
+    mode?: Record<string, T>;
+    [key: string]: unknown;
+  };
   /** group metadata */
   _group: Record<string, unknown>;
 }
@@ -70,6 +75,8 @@ export interface ColorToken extends TokenBase<string> {
 }
 export interface ParsedColorToken extends ParsedTokenBase<string> {
   $type: 'color';
+  /** Is this an alias of another token? */
+  alias?: ParsedColorToken;
   _original: ColorToken;
 }
 
@@ -80,6 +87,8 @@ export interface DimensionToken extends TokenBase<string> {
 }
 export interface ParsedDimensionToken extends ParsedTokenBase<string> {
   $type: 'dimension';
+  /** Is this an alias of another token? */
+  alias?: ParsedDimensionToken;
   _original: DimensionToken;
 }
 
@@ -90,6 +99,8 @@ export interface FontFamilyToken extends TokenBase<string | string[]> {
 }
 export interface ParsedFontFamilyToken extends ParsedTokenBase<string[]> {
   $type: 'fontFamily';
+  /** Is this an alias of another token? */
+  alias?: ParsedFontFamilyToken;
   _original: FontFamilyToken;
 }
 
@@ -101,6 +112,8 @@ export interface FontWeightToken extends TokenBase<number> {
 
 export interface ParsedFontWeightToken extends ParsedTokenBase<number> {
   $type: 'fontWeight';
+  /** Is this an alias of another token? */
+  alias?: ParsedFontWeightToken;
   _original: FontWeightToken;
 }
 
@@ -111,6 +124,8 @@ export interface DurationToken extends TokenBase<string> {
 }
 export interface ParsedDurationToken extends ParsedTokenBase<string> {
   $type: 'duration';
+  /** Is this an alias of another token? */
+  alias?: ParsedDurationToken;
   _original: DurationToken;
 }
 
@@ -121,6 +136,8 @@ export interface CubicBezierToken extends TokenBase<[number, number, number, num
 }
 export interface ParsedCubicBezierToken extends ParsedTokenBase<[number, number, number, number]> {
   $type: 'cubicBezier';
+  /** Is this an alias of another token? */
+  alias?: ParsedCubicBezierToken;
   _original: CubicBezierToken;
 }
 
@@ -132,6 +149,8 @@ export interface NumberToken extends TokenBase<number> {
 
 export interface ParsedNumberToken extends ParsedTokenBase<number> {
   $type: 'number';
+  /** Is this an alias of another token? */
+  alias?: ParsedNumberToken;
   _original: NumberToken;
 }
 
@@ -142,6 +161,8 @@ export interface LinkToken extends TokenBase<string> {
 }
 export interface ParsedLinkToken extends ParsedTokenBase<string> {
   $type: 'link';
+  /** Is this an alias of another token? */
+  alias?: ParsedLinkToken;
   _original: LinkToken;
 }
 
@@ -153,6 +174,8 @@ export interface StrokeStyleToken extends TokenBase<StrokeStyleValue> {
 
 export interface ParsedStrokeStyleToken extends ParsedTokenBase<StrokeStyleValue> {
   $type: 'strokeStyle';
+  /** Is this an alias of another token? */
+  alias?: ParsedStrokeStyleToken;
   _original: StrokeStyleToken;
 }
 
@@ -177,6 +200,8 @@ export interface BorderToken extends TokenBase<Partial<BorderTokenValue>> {
 
 export interface ParsedBorderToken extends ParsedTokenBase<BorderTokenValue> {
   $type: 'border';
+  /** Is this an alias of another token? */
+  alias?: ParsedBorderToken;
   _original: BorderToken;
 }
 
@@ -192,6 +217,8 @@ export interface TransitionToken extends TokenBase<Partial<TransitionValue>> {
 }
 export interface ParsedTransitionToken extends ParsedTokenBase<TransitionValue> {
   $type: 'transition';
+  /** Is this an alias of another token? */
+  alias?: ParsedTransitionToken;
   _original: TransitionToken;
 }
 
@@ -211,6 +238,8 @@ export interface ShadowToken extends TokenBase<Partial<ShadowValue> | Partial<Sh
 }
 export interface ParsedShadowToken extends ParsedTokenBase<ShadowValue[]> {
   $type: 'shadow';
+  /** Is this an alias of another token? */
+  alias?: ParsedShadowToken;
   _original: ShadowToken;
 }
 
@@ -225,6 +254,8 @@ export interface GradientToken extends TokenBase<Partial<GradientStop>[]> {
 }
 export interface ParsedGradientToken extends ParsedTokenBase<GradientStop[]> {
   $type: 'gradient';
+  /** Is this an alias of another token? */
+  alias?: ParsedGradientToken;
   _original: GradientToken;
 }
 
@@ -246,5 +277,7 @@ export interface TypographyToken extends TokenBase<Partial<TypographyValue>> {
 }
 export interface ParsedTypographyToken extends ParsedTokenBase<Partial<ParsedTypographyValue>> {
   $type: 'typography';
+  /** Is this an alias of another token? */
+  alias?: ParsedTypographyToken;
   _original: TypographyToken;
 }

@@ -2,6 +2,14 @@ export function isObj(value: unknown): boolean {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
 
+/** determine using very advanced, sophisticated techniques whether a string is JSON or YAML */
+export function isJSON(value: unknown) {
+  if (typeof value !== 'string') {
+    return false;
+  }
+  return value.trim()[0] === '{';
+}
+
 /** return true for undefined/null, and empty strings, arrays, and objects (numbers aren’t empty) */
 export function isEmpty(value: unknown): boolean {
   if (value === undefined || value === null) {

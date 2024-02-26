@@ -3,6 +3,7 @@ import parseJSON from 'parse-json';
 import yaml from 'yaml';
 import type { Group, ParsedToken, TokenType, TokenOrGroup, Token } from '../token.js';
 import { isEmpty, isJSON, isObj, splitType } from '../util.js';
+import { convertTokensStudioFormat, isTokensStudioFormat } from './tokens-studio.js';
 import { normalizeBorderValue } from './tokens/border.js';
 import { normalizeColorValue, type ParseColorOptions } from './tokens/color.js';
 import { normalizeCubicBezierValue } from './tokens/cubic-bezier.js';
@@ -17,15 +18,16 @@ import { normalizeShadowValue } from './tokens/shadow.js';
 import { normalizeStrokeStyleValue } from './tokens/stroke-style.js';
 import { normalizeTransitionValue } from './tokens/transition.js';
 import { normalizeTypographyValue } from './tokens/typography.js';
-import { convertTokensStudioFormat, isTokensStudioFormat } from './tokens-studio.js';
 import { convertFigmaVariablesFormat, isFigmaVariablesFormat, type FigmaParseOptions, type FigmaVariableManifest } from './figma.js';
+
+export type ParsedTokenManifest = { [tokenID: string]: ParsedToken };
 
 export interface ParseResult {
   errors?: string[];
   warnings?: string[];
   result: {
     metadata: Record<string, unknown>;
-    tokens: ParsedToken[];
+    tokens: ParsedTokenManifest;
   };
 }
 
@@ -56,13 +58,12 @@ interface InheritedGroup {
 
 const RESERVED_KEYS = new Set(['$description', '$name', '$type', '$value', '$extensions']);
 
-export function parse(rawTokens: unknown, options?: ParseOptions): ParseResult {
+export default function parse(rawTokens: unknown, options?: ParseOptions): ParseResult {
   const errors: string[] = [];
   const warnings: string[] = [];
-  const result: ParseResult = { result: { metadata: {}, tokens: [] } };
+  const result: ParseResult = { result: { metadata: {}, tokens: {} } };
 
   let tokensObj = rawTokens;
-
   if (typeof tokensObj === 'string') {
     if (isJSON(tokensObj)) {
       try {
@@ -414,8 +415,7 @@ export function parse(rawTokens: unknown, options?: ParseOptions): ParseResult {
   if (warnings.length) {
     result.warnings = warnings;
   }
-  result.result.tokens = Object.values(tokens);
-  result.result.tokens.sort((a, b) => a.id.localeCompare(b.id, 'en-us', { numeric: true })); // sort alphabetically
+  result.result.tokens = tokens;
   return result;
 }
 
@@ -441,8 +441,8 @@ export function findAliases(input: string): string[] {
       }
       case '}': {
         if (lastI === -1) {
-          continue;
-        } // ignore '}' if no '{'
+          continue; // ignore '}' if no '{'
+        }
         matches.push(input.substring(lastI, n + 1));
         lastI = -1; // reset last index
         break;
